@@ -1,26 +1,26 @@
 import { FirebaseConfig } from "./config/Config"
 import { initializeApp } from "firebase/app"
+import { Routes, Route } from "react-router-dom"
 
-import Container from "react-bootstrap/Container"
-import Navbar from "react-bootstrap/Navbar"
-import Nav from "react-bootstrap/Nav"
+import { Header } from "./components/Header"
 import './App.css'
+import { About } from "./pages/About"
+import { Home } from "./pages/Home"
+import { Contact } from "./pages/Contact"
 
 function App() {
   const FBapp = initializeApp(FirebaseConfig)
+  const saySomething = ( word ) => {
+    alert( word )
+  }
   return (
     <div className="App">
-      <Navbar>
-        <Container>
-          <Navbar.Brand>App</Navbar.Brand>
-          <Nav>
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
-            <Nav.Link href="/contact">Contact</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-      <h1>React app</h1>
+      <Header />
+      <Routes>
+        <Route path="/" element={ <Home greeting="Hey you're at home!" /> } />
+        <Route path="/about" element={ <About greeting="Hey you, this is about page!" handler={saySomething} /> } />
+        <Route path="/contact" element={ <Contact /> } />
+      </Routes>
     </div>
   );
 }
