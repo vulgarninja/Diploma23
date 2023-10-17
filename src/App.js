@@ -7,9 +7,15 @@ import {
   signOut,
   signInWithEmailAndPassword
 } from "firebase/auth"
-import { getFirestore } from "firebase/firestore"
+import { 
+  getFirestore, 
+  collection, 
+  query, 
+  where, 
+  getDocs 
+} from "firebase/firestore"
 import { Routes, Route } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { Header } from "./components/Header"
 import './App.css'
@@ -26,8 +32,8 @@ import { AuthContext } from "./contexts/AuthContext"
 
 function App() {
   const FBapp = initializeApp(FirebaseConfig)
-  const FBauth = getAuth()
-  const FBdb = getFirestore()
+  const FBauth = getAuth(FBapp)
+  const FBdb = getFirestore(FBapp)
 
   // navigation array
   const NavItems = [
@@ -48,6 +54,15 @@ function App() {
   // application states
   const [nav, setNav] = useState(NavItems)
   const [auth, setAuth] = useState(false)
+  const [data, setData] = useState([])
+  const [ fetching , setFetching ] = useState( false )
+
+  useEffect( () => {
+    if( data.length === 0 && fetching === false ) {
+      readData()
+      setFetching( true )
+    }
+  }, [data])
 
   // authentication observer
   onAuthStateChanged(FBauth, (user) => {
@@ -94,12 +109,24 @@ function App() {
     })
   }
 
+  // function to get data
+  const readData = async () => {
+    const querySnapshot = await getDocs( collection( FBdb, "books") )
+    let listdata = []
+    querySnapshot.forEach( (doc) => {
+      let item = doc.data()
+      item.id = doc.id
+      listdata.push( item )
+    })
+    setData( listdata )
+  }
+
   return (
     <div className="App">
       <Header items={nav} user={auth} />
       <AuthContext.Provider value={auth}>
         <Routes>
-          <Route path="/" element={<Home greeting="Hey you're at home!" />} />
+          <Route path="/" element={<Home items = {data} />} />
           <Route path="/about" element={<About greeting="Hey you, this is about page!" handler={saySomething} />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/signup" element={<Signup handler={signUp} />} />
