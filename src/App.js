@@ -7,13 +7,14 @@ import {
   signOut,
   signInWithEmailAndPassword
 } from "firebase/auth"
-import { 
-  getFirestore, 
-  collection, 
-  query, 
-  where, 
-  getDocs 
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs
 } from "firebase/firestore"
+import { getStorage } from "firebase/storage"
 import { Routes, Route } from "react-router-dom"
 import { useState, useEffect } from "react"
 
@@ -28,12 +29,14 @@ import { Signin } from "./pages/Signin"
 
 //contexts
 import { AuthContext } from "./contexts/AuthContext"
+import { StorageContext } from "./contexts/StorageContext"
 
 
 function App() {
   const FBapp = initializeApp(FirebaseConfig)
   const FBauth = getAuth(FBapp)
   const FBdb = getFirestore(FBapp)
+  const FBstorage = getStorage(FBapp)
 
   // navigation array
   const NavItems = [
@@ -55,12 +58,12 @@ function App() {
   const [nav, setNav] = useState(NavItems)
   const [auth, setAuth] = useState(false)
   const [data, setData] = useState([])
-  const [ fetching , setFetching ] = useState( false )
+  const [fetching, setFetching] = useState(false)
 
-  useEffect( () => {
-    if( data.length === 0 && fetching === false ) {
+  useEffect(() => {
+    if (data.length === 0 && fetching === false) {
       readData()
-      setFetching( true )
+      setFetching(true)
     }
   }, [data])
 
@@ -102,37 +105,39 @@ function App() {
           // user is signed in
           resolve(true)
         })
-        .catch((error) => { 
-          console.log(error) 
-          reject( error.code )
+        .catch((error) => {
+          console.log(error)
+          reject(error.code)
         })
     })
   }
 
   // function to get data
   const readData = async () => {
-    const querySnapshot = await getDocs( collection( FBdb, "books") )
+    const querySnapshot = await getDocs(collection(FBdb, "books"))
     let listdata = []
-    querySnapshot.forEach( (doc) => {
+    querySnapshot.forEach((doc) => {
       let item = doc.data()
       item.id = doc.id
-      listdata.push( item )
+      listdata.push(item)
     })
-    setData( listdata )
+    setData(listdata)
   }
 
   return (
     <div className="App">
       <Header items={nav} user={auth} />
       <AuthContext.Provider value={auth}>
-        <Routes>
-          <Route path="/" element={<Home items = {data} />} />
-          <Route path="/about" element={<About greeting="Hey you, this is about page!" handler={saySomething} />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/signup" element={<Signup handler={signUp} />} />
-          <Route path="/signout" element={<Signout handler={logOut} />} />
-          <Route path="/signin" element={<Signin handler={signIn} authstate={auth} />} />
-        </Routes>
+        <StorageContext.Provider value={FBstorage}>
+          <Routes>
+            <Route path="/" element={<Home items={data} />} />
+            <Route path="/about" element={<About greeting="Hey you, this is about page!" handler={saySomething} />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/signup" element={<Signup handler={signUp} />} />
+            <Route path="/signout" element={<Signout handler={logOut} />} />
+            <Route path="/signin" element={<Signin handler={signIn} authstate={auth} />} />
+          </Routes>
+        </StorageContext.Provider>
       </AuthContext.Provider>
     </div>
   );

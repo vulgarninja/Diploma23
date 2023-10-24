@@ -3,10 +3,14 @@ import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import Card from "react-bootstrap/Card"
 
-import { useState, useEffect} from 'react'
+import { ref, getDownloadURL } from 'firebase/storage'
+import { useState, useEffect, useContext } from 'react'
+import { StorageContext } from "../contexts/StorageContext"
 
 export function Home ( props ) {
   const [ books, setBooks ] = useState([])
+
+  const Storage = useContext( StorageContext )
 
   useEffect( () => {
     setBooks( props.items )
@@ -18,7 +22,7 @@ export function Home ( props ) {
       <Col md="4" key={key}>
         <Card>
           <Card.Body>
-            <Card.Title>{item.title}</Card.Title>
+            <Card.Title>{item.book_title}</Card.Title>
             <Card.Text>
               By {item.author}
             </Card.Text>
