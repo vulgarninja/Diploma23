@@ -20,7 +20,7 @@ export function ItemImage ( props ) {
   if(!image) {
     const defstyle={
       backgroundColor: "#cccccc",
-      aspectRatio: "4/3"
+      aspectRatio: "3/4"
     }
     return (
       <div style={defstyle}>
@@ -29,7 +29,7 @@ export function ItemImage ( props ) {
   }
   else {
     return (
-      <Card.Img variant='top' src={image} />
+      <Card.Img style={{aspectRatio: "3/4"}} variant='top' src={image} />
     )
   }
 }

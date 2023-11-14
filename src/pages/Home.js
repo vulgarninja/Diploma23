@@ -18,7 +18,7 @@ export function Home(props) {
 
   const ItemCards = books.map( ( book, itemkey ) => {
     return(
-      <Col md={4}>
+      <Col md={2}>
         <Card key={itemkey}>
           <ItemImage source={ book.cover_image} />
           <Card.Body>
