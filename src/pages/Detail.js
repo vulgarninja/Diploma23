@@ -4,7 +4,8 @@ import Col from "react-bootstrap/Col"
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { ItemImage } from "../components/ItemImage"
-import { Form } from "react-bootstrap"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
 
 export function Detail(props) {
   const [bookData, setBookData ] = useState()
@@ -50,6 +51,15 @@ export function Detail(props) {
                   <option value="5">5</option>
                 </Form.Select>
               </Form.Group>
+              <Form.Group>
+                <Form.Label>Title</Form.Label>
+                <Form.Control type="text" placeholder="I love this book" />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Review</Form.Label>
+                <Form.Control as="textarea" rows={4} cols={30} placeholder="I could not put this down!" />
+              </Form.Group>
+              <Button type="submit" variant="primary">Submit</Button>
             </Form>
           </Col>
         </Row>
