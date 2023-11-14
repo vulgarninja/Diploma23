@@ -10,9 +10,9 @@ import {
 import {
   getFirestore,
   collection,
-  query,
-  where,
-  getDocs
+  getDocs,
+  doc,
+  getDoc
 } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
 import { Routes, Route } from "react-router-dom"
@@ -26,6 +26,7 @@ import { Contact } from "./pages/Contact"
 import { Signup } from "./pages/Signup"
 import { Signout } from "./pages/Signout"
 import { Signin } from "./pages/Signin"
+import { Detail } from "./pages/Detail"
 
 //contexts
 import { AuthContext } from "./contexts/AuthContext"
@@ -123,6 +124,15 @@ function App() {
     })
     setData(listdata)
   }
+  // function to get a single item
+  const getDocument = async ( itemId ) => {
+    const docRef = doc( FBdb, "books", itemId )
+    const docSnap = await getDoc( docRef )
+    let book = docSnap.data()
+    book.id = itemId
+    return book
+  }
+
 
   return (
     <div className="App">
@@ -136,6 +146,7 @@ function App() {
             <Route path="/signup" element={<Signup handler={signUp} />} />
             <Route path="/signout" element={<Signout handler={logOut} />} />
             <Route path="/signin" element={<Signin handler={signIn} authstate={auth} />} />
+            <Route path="/detail/:id" element={<Detail handler={getDocument} />} />
           </Routes>
         </StorageContext.Provider>
       </AuthContext.Provider>
