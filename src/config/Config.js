@@ -1,8 +1,8 @@
-export const FirebaseConfig = {
-  apiKey: "AIzaSyA0KziJxDjxoqIAZu-d0K6eoA83FsGQqow",
-  authDomain: "classproject2-f9ca7.firebaseapp.com",
-  projectId: "classproject2-f9ca7",
-  storageBucket: "classproject2-f9ca7.appspot.com",
-  messagingSenderId: "424302348224",
-  appId: "1:424302348224:web:3b23db88eb2623003e6a25"
-}
+export const firebaseConfig = {
+  apiKey: "AIzaSyCrLswChFyKw9LI8yJnmR2e-rV6ITzbjxw",
+  authDomain: "ramese-diploma-bd3c0.firebaseapp.com",
+  projectId: "ramese-diploma-bd3c0",
+  storageBucket: "ramese-diploma-bd3c0.appspot.com",
+  messagingSenderId: "365959869078",
+  appId: "1:365959869078:web:d21a15b490634dcd4f48b7"
+};

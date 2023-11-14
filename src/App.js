@@ -1,4 +1,4 @@
-import { FirebaseConfig } from "./config/Config"
+import { firebaseConfig } from "./config/Config"
 import { initializeApp } from "firebase/app"
 import {
   getAuth,
@@ -33,7 +33,7 @@ import { StorageContext } from "./contexts/StorageContext"
 
 
 function App() {
-  const FBapp = initializeApp(FirebaseConfig)
+  const FBapp = initializeApp(firebaseConfig)
   const FBauth = getAuth(FBapp)
   const FBdb = getFirestore(FBapp)
   const FBstorage = getStorage(FBapp)
